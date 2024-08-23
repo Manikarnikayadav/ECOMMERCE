@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "BACKEND/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"node BACKEND/server.js",
+    "dev":"nodemon BACKEND/server.js"
   },
   "author": "Mani",
   "license": "ISC",
@@ -11,6 +13,7 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "mongoose": "^8.5.3"
+    "mongoose": "^8.5.3",
+    "nodemon": "^3.1.4"
   }
 }
