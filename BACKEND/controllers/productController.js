@@ -6,6 +6,8 @@ const ApiFeatures = require("../utils/apiFeatures.js")
 // Create Product -- Admin
 
 exports.createProduct = catchAsyncError(async(req,res,next)=>{
+    req.body.user = req.user.id;
+    
     const product = await Product.create(req.body);
 
     res.status(201)
@@ -40,17 +42,30 @@ exports.getAllProducts =catchAsyncError(async (req,res)=>{
 
 exports.updateProduct = catchAsyncError(async (req,res,next)=>{
    let product = await Product.findById(req.params.id)
-
+//    console.log(product);
+   
    if(!product)
     return next(new ErrorHandler("Product not found",404))
 
-   product = await Product.findByIdAndUpdate(
+/*  product = await Product.findByIdAndUpdate(
     req.params.id,
     req.body,{
         new:true,
         runValidators:true,
         useFindAndModify:false
-   });
+   });*/
+
+   try {
+    product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false,
+    });
+} catch (error) {
+    console.log(error);
+    return next(new ErrorHandler("Product update failed", 500));
+}
+
    res.status(200).json({
         success:true,
         product
@@ -62,7 +77,7 @@ exports.updateProduct = catchAsyncError(async (req,res,next)=>{
 
 exports.deleteProduct = catchAsyncError(async(req,res,next)=>{
     const product = await Product.findById(req.params.id)
-
+    console.log(product);
     if(!product)
         return next(new ErrorHandler("Product not found",404))
 
